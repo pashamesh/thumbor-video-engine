@@ -93,6 +93,12 @@ FFPROBE\_PATH
 
 Path for the ffprobe binary. It defaults to ``'/usr/local/bin/ffprobe'``.
 
+FFMPEG\_AUDIO\_STREAM\_TYPE
+~~~~~~~~~~~~~
+
+This setting allows you to set the audio stream type for processing video files.
+By default, video files are processed without audio. The ``there_is_audio`` flag
+allows you to process video files with audio.
 
 H.264 (MP4)
 -----------
@@ -391,6 +397,7 @@ Example Configuration
     FFMPEG_USE_GIFSICLE_ENGINE = True
     FFMPEG_PATH = '/usr/bin/ffmpeg'
     FFPROBE_PATH = '/usr/bin/ffprobe'
+    FFMPEG_AUDIO_STREAM_TYPE = 'no_audio'
     FFMPEG_H264_MAXRATE = '1200k'
     FFMPEG_H264_BUFSIZE = '2400k'
     FFMPEG_H264_CRF = 24

@@ -6,6 +6,7 @@ from decimal import Decimal
 from io import BytesIO, open
 import re
 from subprocess import Popen, PIPE
+import os
 
 from PIL import Image, ImageSequence
 from thumbor.engines import BaseEngine
@@ -41,6 +42,10 @@ class Engine(BaseEngine):
         super(Engine, self).__init__(context)
         self.ffmpeg_path = self.context.config.FFMPEG_PATH
         self.ffprobe_path = self.context.config.FFPROBE_PATH
+
+    @property
+    def get_audio_stream_type(self):
+        return self.context.config.FFMPEG_AUDIO_STREAM_TYPE
 
     @property
     def use_gif_engine(self):
@@ -324,6 +329,9 @@ class Engine(BaseEngine):
             '-movflags', 'faststart',
         ] + vf_flags + ['-f', 'webm']
 
+        if self.get_audio_stream_type == 'there_is_audio':
+            flags.remove('-an')
+
         if self.context.config.FFMPEG_VP9_VBR is not None:
             flags += ['-b:v', "%s" % self.context.config.FFMPEG_VP9_VBR]
         if self.context.config.FFMPEG_VP9_CRF is not None:
@@ -357,6 +365,9 @@ class Engine(BaseEngine):
         flags = [
             '-c:v', 'libx264', '-an', '-pix_fmt', 'yuv420p', '-movflags', 'faststart',
         ] + vf_flags + ['-f', 'mp4']
+
+        if self.get_audio_stream_type == 'there_is_audio':
+            flags.remove('-an')
 
         if self.get_config('tune', 'h264'):
             flags += ['-tune', self.get_config('tune', 'h264')]
@@ -396,6 +407,9 @@ class Engine(BaseEngine):
             '-c:v', 'hevc', '-tag:v', 'hvc1', '-an', '-pix_fmt', 'yuv420p',
             '-movflags', 'faststart',
         ] + vf_flags + ['-f', 'mp4']
+
+        if self.get_audio_stream_type == 'there_is_audio':
+            flags.remove('-an')
 
         x265_params = []
 

@@ -288,3 +288,11 @@ Config.define(
     'the source image is an animated gif and the request accepts it (via '
     'Accept: video/* header)',
     'Video')
+
+Config.define(
+    'FFMPEG_AUDIO_STREAM_TYPE',
+    '-an',
+    'This setting allows you to set the audio stream type for processing '
+    'video files. By default, video files are processed without audio. '
+    'The (there_is_audio) flag allows you to process video files with audio',
+    'Video')
